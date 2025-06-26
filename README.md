@@ -1,1 +1,0 @@
-# lamp-multi-tier
