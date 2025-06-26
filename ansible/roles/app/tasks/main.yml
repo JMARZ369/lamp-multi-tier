@@ -1,0 +1,21 @@
+---
+- name: Install Apache and PHP
+  dnf:
+    name:
+      - httpd
+      - php
+    state: present
+  become: true
+
+- name: Ensure Apache is running
+  service:
+    name: httpd
+    state: started
+    enabled: true
+  become: true
+
+- name: Copy app.php
+  copy:
+    src: app.php
+    dest: /var/www/html/app.php
+  become: true

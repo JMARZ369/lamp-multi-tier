@@ -1,0 +1,12 @@
+---
+- name: Configure Web Tier
+  hosts: web
+  become: true
+  roles:
+    - web
+
+- name: Configure App Tier
+  hosts: app
+  become: true
+  roles:
+    - app

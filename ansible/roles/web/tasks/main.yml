@@ -1,0 +1,30 @@
+---
+- name: Install Apache
+  yum:
+    name: httpd
+    state: present
+
+- name: Start Apache
+  service:
+    name: httpd
+    state: started
+    enabled: yes
+
+- name: Copy index.html to web server
+  copy:
+    src: index.html
+    dest: /var/www/html/index.html
+
+- name: Configure reverse proxy to App EC2
+  copy:
+    dest: /etc/httpd/conf.d/app-proxy.conf
+    content: |
+      <VirtualHost *:80>
+          ProxyPreserveHost On
+          ProxyPass "/app" "http://x.x.x.x/app.php"
+          ProxyPassReverse "/app" "http://x.x.x.x/app.php"
+      </VirtualHost>
+  notify: Restart Apache
+  become: true
+
+# x.x.x.x = Private IP of your EC2 APP Instance
